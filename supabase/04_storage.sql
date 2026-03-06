@@ -7,9 +7,6 @@ VALUES ('payment-screenshots', 'payment-screenshots', true);
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('qr-codes', 'qr-codes', true);
 
--- Enable RLS on objects
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
-
 -- --------------------------------------------------------
 -- PAYMENT-SCREENSHOTS BUCKET POLICIES
 -- --------------------------------------------------------
