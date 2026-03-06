@@ -1,17 +1,13 @@
-/// <reference types="node" />
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
     console.warn('Supabase URL or Anon Key is missing. Ensure your .env file is configured correctly.');
 }
 
-export const supabase = createClient(
-    supabaseUrl || 'https://placeholder.supabase.co',
-    supabaseAnonKey || 'placeholder'
-);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export type UserRole = 'user' | 'chef' | 'delivery' | 'admin';
 
@@ -44,7 +40,7 @@ export type Order = {
 
 // Admin Client (Only use in Admin Dashboard context)
 export const getSupabaseAdmin = () => {
-    const serviceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+    const serviceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
     if (!serviceKey) {
         throw new Error('VITE_SUPABASE_SERVICE_ROLE_KEY missing - Admin operations require this.');
     }
