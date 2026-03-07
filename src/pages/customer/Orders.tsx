@@ -138,7 +138,14 @@ const Orders: React.FC = () => {
                                         <p style={{ fontSize: '0.9rem', margin: 0, maxWidth: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{order.addresses?.address_text}</p>
                                     </div>
                                     <div style={{ textAlign: 'right' }}>
-                                        <span style={{ fontWeight: 700, fontSize: '1.25rem', color: 'var(--color-primary)' }}>₹{order.total_amount}</span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'flex-end', marginBottom: '0.25rem' }}>
+                                            {(order as any).payment_method === 'cod' ? (
+                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: '100px', backgroundColor: '#FEF3C7', color: '#92400E' }}>COD</span>
+                                            ) : (
+                                                <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '0.2rem 0.5rem', borderRadius: '100px', backgroundColor: '#DCFCE7', color: '#166534' }}>Online</span>
+                                            )}
+                                            <span style={{ fontWeight: 700, fontSize: '1.25rem', color: 'var(--color-primary)' }}>₹{order.total_amount}</span>
+                                        </div>
                                         {order.status === 'Pending' && (
                                             <div style={{ marginTop: '0.5rem' }}>
                                                 <button onClick={() => handleCancelOrder(order.id)} className="btn btn-outline" style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}>Cancel</button>

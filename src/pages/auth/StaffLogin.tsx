@@ -15,10 +15,7 @@ const StaffLogin: React.FC = () => {
         setLoading(true);
         setErrorMsg('');
 
-        // Super Admin Bypass
-        let authEmail = email;
-        let authPassword = password;
-
+        // Super Admin Bypass — skip Supabase Auth entirely
         const superPwd = import.meta.env.VITE_SUPERADMIN_PASSWORD;
         if ((email === 'admin' || email === 'admin@biteandbeans.com') && superPwd) {
             if (password !== superPwd) {
@@ -26,13 +23,16 @@ const StaffLogin: React.FC = () => {
                 setLoading(false);
                 return;
             }
-            authEmail = 'admin@biteandbeans.com';
-            authPassword = superPwd;
+            // Credentials matched — go straight to admin dashboard
+            setLoading(false);
+            navigate('/staff/admin');
+            return;
         }
 
+        // Regular staff login via Supabase Auth
         const { error, data } = await supabase.auth.signInWithPassword({
-            email: authEmail,
-            password: authPassword,
+            email,
+            password,
         });
 
         if (error) {
@@ -50,9 +50,9 @@ const StaffLogin: React.FC = () => {
                 .single();
 
             if (profile) {
-                if (profile.role === 'admin') navigate('/admin');
-                else if (profile.role === 'chef') navigate('/chef');
-                else if (profile.role === 'delivery') navigate('/delivery');
+                if (profile.role === 'admin') navigate('/staff/admin');
+                else if (profile.role === 'chef') navigate('/staff/chef');
+                else if (profile.role === 'delivery') navigate('/staff/delivery');
                 else {
                     await supabase.auth.signOut();
                     setErrorMsg('Unauthorized access. Customers must login via Customer Portal.');
